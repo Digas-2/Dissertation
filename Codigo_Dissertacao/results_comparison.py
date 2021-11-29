@@ -94,16 +94,13 @@ def sdvMetrics(df1,df2,opt1,opt2):
     gc.collect()
     print("SDV metrics")
     print(df1)
-    #df1 = df1.apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna()
-    #df2 = df2.apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna()
-    #df1 = df1.sample(frac=0.2, replace=True,random_state=1)
-    #df2 = df2.sample(frac=0.2, replace=True,random_state=1)
+
     with open(f'{opt1}_metric.csv','a') as fd:
         fd.write(opt2)
         fd.write("\n")
 
-        #fd.write(str(CSTest.compute(df1, df2)))
-        #fd.write("\n")
+        fd.write(str(CSTest.compute(df1, df2)))
+        fd.write("\n")
 
         print("Calculating BNLikelihood")
         fd.write(str(BNLikelihood.compute(df1, df2)))
@@ -112,7 +109,6 @@ def sdvMetrics(df1,df2,opt1,opt2):
         print("Calculating BNLogLikelihood")
         fd.write(str(BNLogLikelihood.compute(df1, df2)))
         fd.write("\n")
-    #print(GMLogLikelihood.compute(df1, df2))
 
 def sdvPrivacyMetrics(df1,df2,opt1,opt2):
     gc.collect()
@@ -120,35 +116,30 @@ def sdvPrivacyMetrics(df1,df2,opt1,opt2):
     with open(f'{opt1}_priv.csv','a') as fd:
         fd.write(opt2)
         fd.write("\n")
-        #df2 = df2.drop(['ROW_ID'], axis=1)
 
-        #df1 = df1.sample(frac=0.1, replace=True,random_state=1)
-        #df2 = df2.sample(frac=0.1, replace=True,random_state=1)
         df1 = df1.fillna(0)
         df2 = df2.fillna(0)
         df1 = df1.astype(str)
         df2 = df2.astype(str)
 
-        #df2 = df2.apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna()
-
         df1 = df1.reset_index(drop=True)
         df2 = df2.reset_index(drop=True)
 
-        #print("Calculating CGCAP")
-        #fd.write(str(CategoricalCAP.compute(df1, df2,key_fields=['SUBJECT_ID'],sensitive_fields=['ICD9_CODE'])))
-        #fd.write("\n")
+        print("Calculating CGCAP")
+        fd.write(str(CategoricalCAP.compute(df1, df2,key_fields=['SUBJECT_ID'],sensitive_fields=['ICD9_CODE'])))
+        fd.write("\n")
 
-        #print("Calculating KNN")
-        #fd.write(CategoricalKNN.compute(df1.fillna(0), df2.fillna(0).values.ravel(),key_fields=['SUBJECT_ID'],sensitive_fields=['ICD9_CODE']))
-        #fd.write("\n")
+        print("Calculating KNN")
+        fd.write(CategoricalKNN.compute(df1.fillna(0), df2.fillna(0).values.ravel(),key_fields=['SUBJECT_ID'],sensitive_fields=['ICD9_CODE']))
+        fd.write("\n")
 
         print("Calculating RF")
         fd.write(str(CategoricalRF.compute(df1, df2,key_fields=['SUBJECT_ID'],sensitive_fields=['ICD9_CODE'])))
         fd.write("\n")
 
-        #print("Calculating Ensamble")
-        #fd.write(str(CategoricalEnsemble.compute(df1, df2,key_fields=['SUBJECT_ID'],sensitive_fields=['ICD9_CODE'])))
-        #fd.write("\n")
+        print("Calculating Ensamble")
+        fd.write(str(CategoricalEnsemble.compute(df1, df2,key_fields=['SUBJECT_ID'],sensitive_fields=['ICD9_CODE'])))
+        fd.write("\n")
 
 def sdvPrivacyMetrics2(df1,df2,opt1,opt2):
     gc.collect()
@@ -160,19 +151,17 @@ def sdvPrivacyMetrics2(df1,df2,opt1,opt2):
         df2 = df2.fillna(0)
         df1 = df1.applymap(str)
         df2 = df2.applymap(str)
-        #fd.write(str(CategoricalCAP.compute(df1, df2,key_fields=['SUBJECT_ID'],sensitive_fields=['DRUG_TYPE','DRUG','DOSE_VAL_RX','DOSE_UNIT_RX','FORM_VAL_DISP','FORM_UNIT_DISP','ROUTE'])))
-        #fd.write("\n")
-        #fd.write(CategoricalKNN.compute(df1.fillna(0), df2.fillna(0),key_fields=['SUBJECT_ID'],sensitive_fields=['DRUG_TYPE','DRUG','DOSE_VAL_RX','DOSE_UNIT_RX','FORM_VAL_DISP','FORM_UNIT_DISP','ROUTE']))
-        #fd.write("\n")
+        fd.write(str(CategoricalCAP.compute(df1, df2,key_fields=['SUBJECT_ID'],sensitive_fields=['DRUG_TYPE','DRUG','DOSE_VAL_RX','DOSE_UNIT_RX','FORM_VAL_DISP','FORM_UNIT_DISP','ROUTE'])))
+        fd.write("\n")
+        fd.write(CategoricalKNN.compute(df1.fillna(0), df2.fillna(0),key_fields=['SUBJECT_ID'],sensitive_fields=['DRUG_TYPE','DRUG','DOSE_VAL_RX','DOSE_UNIT_RX','FORM_VAL_DISP','FORM_UNIT_DISP','ROUTE']))
+        fd.write("\n")
         print("Calculating RF")
         fd.write(CategoricalRF.compute(df1, df2,key_fields=['SUBJECT_ID'],sensitive_fields=['DRUG_TYPE','DRUG','DOSE_VAL_RX','DOSE_UNIT_RX','FORM_VAL_DISP','FORM_UNIT_DISP','ROUTE']))
         fd.write("\n")
-        #fd.write(str(CategoricalEnsemble.compute(df1.fillna(0), df2.fillna(0),key_fields=['SUBJECT_ID'],sensitive_fields=['DRUG_TYPE','DRUG','DOSE_VAL_RX','DOSE_UNIT_RX','FORM_VAL_DISP','FORM_UNIT_DISP','ROUTE'])))
-        #fd.write("\n")
+        fd.write(str(CategoricalEnsemble.compute(df1.fillna(0), df2.fillna(0),key_fields=['SUBJECT_ID'],sensitive_fields=['DRUG_TYPE','DRUG','DOSE_VAL_RX','DOSE_UNIT_RX','FORM_VAL_DISP','FORM_UNIT_DISP','ROUTE'])))
+        fd.write("\n")
     
 def define_size(kap1,lap2):
-    #print(len(kap1))
-    #print(len(lap2))
     if(len(kap1)< len(lap2)):
         lap2 = lap2.head(len(kap1))
     elif(len(kap1) > len(lap2)):
@@ -198,21 +187,17 @@ def data_quality_analysis():
         synth_dataset = synth_dataset.dropna()
         original_dataset,synth_dataset = define_size(original_dataset,synth_dataset)
         synth_dataset = synth_dataset.drop(['ROW_ID'], axis=1)
-        #print(len(original_dataset))
-        #print(len(synth_dataset))
         # Unique value count
-        #unique_values(original_dataset, synth_dataset)
+        unique_values(original_dataset, synth_dataset)
         # Mutual Information
         mutual_info(original_dataset, synth_dataset,opt,filepath)
-        # Finding equals
-        #find_equals(original_dataset, synth_dataset)
         # Do sdv metrics
-        #sdvMetrics(original_dataset, synth_dataset,opt,filepath)
-        #sdvPrivacyMetrics(original_dataset, synth_dataset,opt,filepath)
+        sdvMetrics(original_dataset, synth_dataset,opt,filepath)
+        sdvPrivacyMetrics(original_dataset, synth_dataset,opt,filepath)
         # Do scatter of synth
-        #draw_scatter(synth_dataset,filepath,opt,d_opt)
+        draw_scatter(synth_dataset,filepath,opt,d_opt)
         #Do the suda score
-        #suda_score(synth_dataset,opt,filepath)
+        suda_score(synth_dataset,opt,filepath)
 
 
     for filepath in glob.iglob(r'../Output/mimic_output_procedures_*'):
@@ -230,18 +215,16 @@ def data_quality_analysis():
         original_dataset,synth_dataset = define_size(original_dataset,synth_dataset)
         synth_dataset = synth_dataset.drop(['ROW_ID'], axis=1)
         # Unique value count
-        #unique_values(original_dataset, synth_dataset)
+        unique_values(original_dataset, synth_dataset)
         # Mutual Information
         mutual_info(original_dataset, synth_dataset,opt,filepath)
-        # Finding equals
-        #find_equals(original_dataset, synth_dataset)
         # Do sdv metrics
-        #sdvMetrics(original_dataset, synth_dataset,opt,filepath)
-        #sdvPrivacyMetrics(original_dataset, synth_dataset,opt,filepath)
+        sdvMetrics(original_dataset, synth_dataset,opt,filepath)
+        sdvPrivacyMetrics(original_dataset, synth_dataset,opt,filepath)
         # Do scatter
-        #draw_scatter(synth_dataset,filepath,opt,d_opt)
+        draw_scatter(synth_dataset,filepath,opt,d_opt)
         #Do the suda score
-        #suda_score(synth_dataset,opt)
+        suda_score(synth_dataset,opt)
 
     for filepath in glob.iglob(r'../Output/mimic_output_prescriptions_*'):
         original_dataset = pd.read_csv(
@@ -258,18 +241,16 @@ def data_quality_analysis():
         original_dataset,synth_dataset = define_size(original_dataset,synth_dataset)
         synth_dataset = synth_dataset.drop(['ROW_ID'], axis=1)
         # Unique value count
-        #unique_values(original_dataset, synth_dataset)
+        unique_values(original_dataset, synth_dataset)
         # Mutual Information
-        mutual_info(original_dataset, synth_dataset,opt,filepath)
-        # Finding equals
-        #find_equals(original_dataset, synth_dataset)   
+        mutual_info(original_dataset, synth_dataset,opt,filepath)  
         # Do sdv metrics
-        #sdvMetrics(original_dataset, synth_dataset,opt,filepath)
-        #sdvPrivacyMetrics2(original_dataset, synth_dataset,opt,filepath)
+        sdvMetrics(original_dataset, synth_dataset,opt,filepath)
+        sdvPrivacyMetrics2(original_dataset, synth_dataset,opt,filepath)
         # Do scatter
-        #draw_scatter(synth_dataset,filepath,opt,d_opt)
+        draw_scatter(synth_dataset,filepath,opt,d_opt)
         #Do the suda score
-        #suda_score(synth_dataset,opt,filepath)
+        suda_score(synth_dataset,opt,filepath)
 
 def sorting_dataset(df):
     return df.sort_values(by=['SUBJECT_ID'])
@@ -313,7 +294,7 @@ def do_og_scatter():
 
 
 def main():
-    #do_og_scatter()
+    do_og_scatter()
     data_quality_analysis()
 
 
