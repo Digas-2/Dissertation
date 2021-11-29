@@ -1,0 +1,14 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Synthetic data and re-identification risks
+message: >-
+  Code for the thesis: Synthetic data and
+  re-identification risks
+type: software
+authors:
+  - family-names: Fernandes
+    name-suffix: Diogo
+    email: up201503723@fc.up.pt
+    affiliation: FCUP
